@@ -19,6 +19,7 @@
 		2C35B4B0238A834D0099EB0E /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C35B4AB238A834D0099EB0E /* RxSwift.framework */; };
 		2C35B4B1238A834D0099EB0E /* RxOptional.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C35B4AC238A834D0099EB0E /* RxOptional.framework */; };
 		2C35B4B2238A834D0099EB0E /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C35B4AD238A834D0099EB0E /* RxRelay.framework */; };
+		2C35B4B4238A84A00099EB0E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2C35B4B3238A84A00099EB0E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		2C35B4AB238A834D0099EB0E /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		2C35B4AC238A834D0099EB0E /* RxOptional.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxOptional.framework; path = Carthage/Build/iOS/RxOptional.framework; sourceTree = "<group>"; };
 		2C35B4AD238A834D0099EB0E /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = Carthage/Build/iOS/RxRelay.framework; sourceTree = "<group>"; };
+		2C35B4B3238A84A00099EB0E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 		2C35B465238A80820099EB0E = {
 			isa = PBXGroup;
 			children = (
+				2C35B4B3238A84A00099EB0E /* README.md */,
 				2C35B470238A80820099EB0E /* MovieEditor */,
 				2C35B487238A80820099EB0E /* MovieEditorTests */,
 				2C35B492238A80820099EB0E /* MovieEditorUITests */,
@@ -308,6 +311,7 @@
 			files = (
 				2C35B47E238A80820099EB0E /* LaunchScreen.storyboard in Resources */,
 				2C35B47B238A80820099EB0E /* Assets.xcassets in Resources */,
+				2C35B4B4238A84A00099EB0E /* README.md in Resources */,
 				2C35B479238A80820099EB0E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
