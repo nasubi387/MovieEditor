@@ -29,3 +29,6 @@ Carthage/*
 *.swp
 !.gitkeep
 .DS_Store
+
+# R
+*.generated.swift

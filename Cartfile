@@ -1,2 +1,4 @@
+github "mac-cain13/R.swift.Library"
 github "ReactiveX/RxSwift"
 github "RxSwiftCommunity/RxOptional"
+github "RxSwiftCommunity/RxDataSources"
