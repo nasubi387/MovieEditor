@@ -10,7 +10,7 @@ import Foundation
 
 protocol ContentsWireframeInput {
     static func assembleModule() -> ContentsViewController
-    func presentEditorView(with movie: MovieContent)
+    func presentEditorView(with movie: MovieContent?)
 }
 
 class ContentsWireframe: ContentsWireframeInput {
@@ -37,7 +37,9 @@ class ContentsWireframe: ContentsWireframeInput {
         self.view = view
     }
     
-    func presentEditorView(with movie: MovieContent) {
-        
+    func presentEditorView(with movie: MovieContent?) {
+        guard let movie = movie else {
+            return
+        }
     }
 }

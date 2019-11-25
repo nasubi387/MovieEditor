@@ -52,11 +52,11 @@ class ContentsViewModel {
         fetch()
         
         input.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let movie = self?.currentState.contentCellModels[indexPath.row].currentState.content as? MovieContent else {
-                    return
-                }
-                self?.dependency.wireframe.presentEditorView(with: movie)
+            .map { [weak self] in
+                self?.currentState.contentCellModels[$0.row].currentState.content
+            }
+            .subscribe(onNext: { [weak self] in
+                self?.dependency.wireframe.presentEditorView(with: $0 as? MovieContent)
             })
             .disposed(by: disposeBag)
     }
