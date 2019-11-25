@@ -8,11 +8,15 @@
 
 import RxSwift
 import RxCocoa
+import RxOptional
 
 protocol ContentsUseCaseInput {
-    
+    func fetchContents() -> Observable<[MovieContent]>
 }
 
 class ContentsUseCase: ContentsUseCaseInput {
     
+    func fetchContents() -> Observable<[MovieContent]> {
+        return AssetManager.fetch(.video).map { $0 as? [MovieContent] }.filterNil()
+    }
 }

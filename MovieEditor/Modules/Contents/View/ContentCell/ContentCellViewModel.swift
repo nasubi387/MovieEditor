@@ -12,23 +12,41 @@ import RxCocoa
 
 class ContentCellViewModel {
     
-    struct Input {
-        
-    }
-    
     struct Output {
-        
+        let thumbnailImage: Observable<UIImage>
+        let durationText: Observable<String?>
     }
     
-    private let input: Input
+    struct State {
+        let content: Content
+    }
+    var currentState: State {
+        return State(content: _content.value)
+    }
+    
     let output: Output
     
     private let disposeBag = DisposeBag()
     
-    init(input: Input) {
-        self.input = input
+    private let _content: BehaviorRelay<Content>
+    
+    init(content: Content) {
         
-        let output = Output()
+        _content = BehaviorRelay<Content>(value: content)
+        
+        let thumbnailImage = _content.map { $0.thumbnail }
+        
+        let durationText = _content.map { content -> String? in
+            guard let duration = (content as? MovieContent)?.asset.duration else {
+                return nil
+            }
+            let min = Int(duration / 60)
+            let sec = Int(duration) % 60
+            return String(format:"%02d:%02d", min, sec)
+        }
+        
+        let output = Output(thumbnailImage: thumbnailImage,
+                            durationText: durationText)
         self.output = output
     }
 }

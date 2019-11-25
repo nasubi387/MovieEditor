@@ -25,6 +25,8 @@
 		2C0B1553238A95120073D423 /* ContentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B1552238A95120073D423 /* ContentCellViewModel.swift */; };
 		2C0B1556238A9C9F0073D423 /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0B1554238A9C9F0073D423 /* Differentiator.framework */; };
 		2C0B1557238A9C9F0073D423 /* RxDataSources.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0B1555238A9C9F0073D423 /* RxDataSources.framework */; };
+		2C0B1559238A9E820073D423 /* MovieContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B1558238A9E820073D423 /* MovieContent.swift */; };
+		2C0B155B238AA0B10073D423 /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B155A238AA0B10073D423 /* AssetManager.swift */; };
 		2C35B472238A80820099EB0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35B471238A80820099EB0E /* AppDelegate.swift */; };
 		2C35B47B238A80820099EB0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C35B47A238A80820099EB0E /* Assets.xcassets */; };
 		2C35B47E238A80820099EB0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C35B47C238A80820099EB0E /* LaunchScreen.storyboard */; };
@@ -74,6 +76,8 @@
 		2C0B1552238A95120073D423 /* ContentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCellViewModel.swift; sourceTree = "<group>"; };
 		2C0B1554238A9C9F0073D423 /* Differentiator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differentiator.framework; path = Carthage/Build/iOS/Differentiator.framework; sourceTree = "<group>"; };
 		2C0B1555238A9C9F0073D423 /* RxDataSources.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxDataSources.framework; path = Carthage/Build/iOS/RxDataSources.framework; sourceTree = "<group>"; };
+		2C0B1558238A9E820073D423 /* MovieContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieContent.swift; sourceTree = "<group>"; };
+		2C0B155A238AA0B10073D423 /* AssetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetManager.swift; sourceTree = "<group>"; };
 		2C35B46E238A80820099EB0E /* MovieEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C35B471238A80820099EB0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C35B47A238A80820099EB0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -206,11 +210,11 @@
 		2C35B470238A80820099EB0E /* MovieEditor */ = {
 			isa = PBXGroup;
 			children = (
-				2C35B4A5238A80B20099EB0E /* Entity */,
-				2C35B4A4238A80A50099EB0E /* Extension */,
 				2C35B4A3238A809E0099EB0E /* Common */,
 				2C35B4A2238A80950099EB0E /* AppDelegate */,
 				2C35B4A1238A808E0099EB0E /* Modules */,
+				2C35B4A5238A80B20099EB0E /* Entity */,
+				2C35B4A4238A80A50099EB0E /* Extension */,
 				2C35B4A6238A80BB0099EB0E /* Resource */,
 			);
 			path = MovieEditor;
@@ -253,6 +257,7 @@
 		2C35B4A3238A809E0099EB0E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2C0B155A238AA0B10073D423 /* AssetManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 		2C35B4A5238A80B20099EB0E /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				2C0B1558238A9E820073D423 /* MovieContent.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -495,6 +501,8 @@
 				2C0B1546238A8D9F0073D423 /* UITableViewCell+App.swift in Sources */,
 				2C0B1553238A95120073D423 /* ContentCellViewModel.swift in Sources */,
 				2C0B1550238A94760073D423 /* ContentCell.swift in Sources */,
+				2C0B155B238AA0B10073D423 /* AssetManager.swift in Sources */,
+				2C0B1559238A9E820073D423 /* MovieContent.swift in Sources */,
 				2C0B1544238A8D9F0073D423 /* UITableView+App.swift in Sources */,
 				2C0B1543238A8D9F0073D423 /* NSObject+App.swift in Sources */,
 				2C0B154C238A8F7C0073D423 /* ContentsViewModel.swift in Sources */,

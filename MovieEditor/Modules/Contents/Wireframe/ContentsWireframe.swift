@@ -10,6 +10,7 @@ import Foundation
 
 protocol ContentsWireframeInput {
     static func assembleModule() -> ContentsViewController
+    func presentEditorView(with movie: MovieContent)
 }
 
 class ContentsWireframe: ContentsWireframeInput {
@@ -23,7 +24,7 @@ class ContentsWireframe: ContentsWireframeInput {
         let wireframe = ContentsWireframe(view: view)
         
         let viewModelDependency = ContentsViewModel.Dependency(wireframe: wireframe, usecase: usecase)
-        let viewModelInput = ContentsViewModel.Input()
+        let viewModelInput = ContentsViewModel.Input(itemSelected: view.collectionView.rx.itemSelected)
         
         let viewModel = ContentsViewModel(dependency: viewModelDependency, input: viewModelInput)
         
@@ -34,5 +35,9 @@ class ContentsWireframe: ContentsWireframeInput {
     
     init(view: ContentsViewInput) {
         self.view = view
+    }
+    
+    func presentEditorView(with movie: MovieContent) {
+        
     }
 }

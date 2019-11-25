@@ -17,11 +17,18 @@ class ContentsViewModel {
     }
     
     struct Input {
-        
+        let itemSelected: ControlEvent<IndexPath>
     }
     
     struct Output {
-        
+        let contentCellModels: Observable<[ContentCellViewModel]>
+    }
+    
+    struct State {
+        let contentCellModels: [ContentCellViewModel]
+    }
+    var currentState: State {
+        return State(contentCellModels: _contentCellModels.value)
     }
     
     private let dependency: Dependency
@@ -30,11 +37,36 @@ class ContentsViewModel {
     
     private let disposeBag = DisposeBag()
     
+    let _contentCellModels: BehaviorRelay<[ContentCellViewModel]>
+    
     init(dependency: Dependency, input: Input) {
         self.dependency = dependency
         self.input = input
         
-        let output = Output()
+        _contentCellModels = BehaviorRelay<[ContentCellViewModel]>(value: [])
+        let contentCellModels = _contentCellModels.asObservable()
+        
+        let output = Output(contentCellModels: contentCellModels)
         self.output = output
+        
+        fetch()
+        
+        input.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let movie = self?.currentState.contentCellModels[indexPath.row].currentState.content as? MovieContent else {
+                    return
+                }
+                self?.dependency.wireframe.presentEditorView(with: movie)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func fetch() {
+        dependency.usecase.fetchContents()
+            .map {
+                $0.map { ContentCellViewModel(content: $0) }
+            }
+            .bind(to: _contentCellModels)
+            .dispose()
     }
 }

@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FsJ-Gf-3Wm">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FsJ-Gf-3Wm">
                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gio-rQ-Rky">
@@ -41,10 +41,10 @@
                 <constraint firstItem="Gio-rQ-Rky" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="0o8-yg-fya"/>
                 <constraint firstItem="FsJ-Gf-3Wm" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Krz-yc-ruP"/>
                 <constraint firstAttribute="bottom" secondItem="FsJ-Gf-3Wm" secondAttribute="bottom" id="MyN-1E-2gr"/>
+                <constraint firstItem="Gio-rQ-Rky" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="QHb-mC-yYg"/>
                 <constraint firstItem="FsJ-Gf-3Wm" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ZI4-Xx-Yxe"/>
                 <constraint firstAttribute="trailing" secondItem="FsJ-Gf-3Wm" secondAttribute="trailing" id="gkA-0h-ebl"/>
                 <constraint firstAttribute="trailing" secondItem="Gio-rQ-Rky" secondAttribute="trailing" id="hoj-1t-iJh"/>
-                <constraint firstItem="Gio-rQ-Rky" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="k1j-KE-fra"/>
                 <constraint firstAttribute="bottom" secondItem="Gio-rQ-Rky" secondAttribute="bottom" id="kbF-xR-0sp"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
