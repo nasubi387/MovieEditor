@@ -41,5 +41,7 @@ class ContentsWireframe: ContentsWireframeInput {
         guard let movie = movie else {
             return
         }
+        let movieEvitorView = MovieEditorWireframe.assembleModule(with: movie)
+        view.present(movieEvitorView, animated: true)
     }
 }
