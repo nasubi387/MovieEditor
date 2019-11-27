@@ -9,14 +9,23 @@
 import RxSwift
 import RxCocoa
 import RxOptional
+import Photos
 
 protocol ContentsUseCaseInput {
     func fetchContents() -> Observable<[MovieContent]>
+    func requestURLAsset(from movie: PHAsset) -> Observable<AVURLAsset>
 }
 
 class ContentsUseCase: ContentsUseCaseInput {
     
     func fetchContents() -> Observable<[MovieContent]> {
         return AssetManager.fetch(.video).map { $0 as? [MovieContent] }.filterNil()
+    }
+    
+    func requestURLAsset(from movie: PHAsset) -> Observable<AVURLAsset> {
+        guard movie.mediaType == .video else {
+            return Observable.empty()
+        }
+        return AssetManager.requestMovie(from: movie)
     }
 }

@@ -38,7 +38,7 @@ class ContentsWireframe: ContentsWireframeInput {
     }
     
     func presentEditorView(with movie: MovieContent?) {
-        guard let movie = movie else {
+        guard let movie = movie, movie.urlAsset != nil else {
             return
         }
         let movieEvitorView = MovieEditorWireframe.assembleModule(with: movie)

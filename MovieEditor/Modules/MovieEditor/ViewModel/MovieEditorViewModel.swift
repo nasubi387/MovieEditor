@@ -14,6 +14,7 @@ class MovieEditorViewModel {
     struct Dependency {
         let wireframe: MovieEditorWireframeInput
         let usecase: MovieEditorUseCaseInput
+        let movieManager: MovieManager
     }
     
     struct Input {
@@ -46,5 +47,12 @@ class MovieEditorViewModel {
         _movie = BehaviorRelay<MovieContent>(value: movie)
         let output = Output()
         self.output = output
+    }
+}
+
+extension MovieEditorViewModel {
+    
+    private func fetch() {
+        
     }
 }

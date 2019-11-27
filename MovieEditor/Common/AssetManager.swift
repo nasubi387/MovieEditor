@@ -86,7 +86,7 @@ class AssetManager {
         return Observable.create { observer in
             let manager = PHImageManager.default()
             let options = PHVideoRequestOptions()
-            options.deliveryMode = .automatic
+            options.deliveryMode = .highQualityFormat
             options.version = .original
             
             manager.requestAVAsset(forVideo: asset, options: nil) { urlAsset, audioMix, info  in
@@ -98,7 +98,7 @@ class AssetManager {
                     observer.onError(AssetError.noMovie)
                     return
                 }
-                print(urlAsset.url)
+                
                 observer.onNext(urlAsset)
                 observer.onCompleted()
             }

@@ -22,7 +22,7 @@ class MovieEditorWireframe: MovieEditorWireframeInput {
         let usecase = MovieEditorUseCase()
         let wireframe = MovieEditorWireframe(view: view)
         
-        let viewModelDependency = MovieEditorViewModel.Dependency(wireframe: wireframe, usecase: usecase)
+        let viewModelDependency = MovieEditorViewModel.Dependency(wireframe: wireframe, usecase: usecase, movieManager: MovieManager(with: movie.urlAsset!))
         let viewModelInput = MovieEditorViewModel.Input()
         
         let viewModel = MovieEditorViewModel(dependency: viewModelDependency, input: viewModelInput, movie: movie)

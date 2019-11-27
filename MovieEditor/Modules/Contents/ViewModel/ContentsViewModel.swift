@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import AVFoundation
 
 class ContentsViewModel {
     struct Dependency {
@@ -53,20 +54,36 @@ class ContentsViewModel {
         
         input.itemSelected
             .map { [weak self] in
-                self?.currentState.contentCellModels[$0.row].currentState.content
+                self?.getMovieContent(from: $0)
             }
+            .filterNil()
+            .switchLatest()
             .subscribe(onNext: { [weak self] in
-                self?.dependency.wireframe.presentEditorView(with: $0 as? MovieContent)
+                self?.dependency.wireframe.presentEditorView(with: $0)
             })
             .disposed(by: disposeBag)
     }
     
     private func fetch() {
-        dependency.usecase.fetchContents()
-            .map {
-                $0.map { ContentCellViewModel(content: $0) }
-            }
+        dependency.usecase
+            .fetchContents()
+            .map { $0.map { ContentCellViewModel(content: $0) } }
             .bind(to: _contentCellModels)
             .dispose()
+    }
+    
+    private func getMovieContent(from indexPath: IndexPath) -> Observable<MovieContent> {
+        let selectedContent = currentState.contentCellModels[indexPath.row].currentState.content
+        guard var movie = selectedContent as? MovieContent else {
+            return Observable.empty()
+        }
+        
+        return dependency.usecase
+            .requestURLAsset(from: movie.asset)
+            .observeOn(MainScheduler.instance)
+            .map {
+                movie.urlAsset = $0
+                return movie
+            }
     }
 }

@@ -17,5 +17,5 @@ protocol Content {
 struct MovieContent: Content {
     let thumbnail: UIImage
     let asset: PHAsset
-    var movie: AVURLAsset? = nil
+    var urlAsset: AVURLAsset? = nil
 }
