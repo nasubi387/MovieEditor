@@ -45,13 +45,14 @@ class ContentsViewModel {
         self.input = input
         
         _contentCellModels = BehaviorRelay<[ContentCellViewModel]>(value: [])
+        
+        // output
         let contentCellModels = _contentCellModels.asObservable()
         
         let output = Output(contentCellModels: contentCellModels)
         self.output = output
         
-        fetch()
-        
+        // input
         input.itemSelected
             .map { [weak self] in
                 self?.getMovieContent(from: $0)
@@ -62,6 +63,9 @@ class ContentsViewModel {
                 self?.dependency.wireframe.presentEditorView(with: $0)
             })
             .disposed(by: disposeBag)
+        
+        // setup
+        fetch()
     }
     
     private func fetch() {
