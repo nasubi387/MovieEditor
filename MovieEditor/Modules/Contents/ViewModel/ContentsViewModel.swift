@@ -38,7 +38,7 @@ class ContentsViewModel {
     
     private let disposeBag = DisposeBag()
     
-    let _contentCellModels: BehaviorRelay<[ContentCellViewModel]>
+    private let _contentCellModels: BehaviorRelay<[ContentCellViewModel]>
     
     init(dependency: Dependency, input: Input) {
         self.dependency = dependency
