@@ -42,6 +42,8 @@ class ContentsWireframe: ContentsWireframeInput {
             return
         }
         let movieEvitorView = MovieEditorWireframe.assembleModule(with: movie)
+        movieEvitorView.modalPresentationStyle = .fullScreen
+        
         view.present(movieEvitorView, animated: true)
     }
 }
