@@ -19,10 +19,18 @@ class MovieEditorViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var moviePalyerView: UIView!
     @IBOutlet weak var playImageView: UIImageView!
     var closeButton: UIBarButtonItem!
     var tapPlayerViewGesture: UITapGestureRecognizer!
+    
+    @IBOutlet weak var frameImageScrollView: UIScrollView!
+    @IBOutlet weak var frameImageStackView: UIStackView!
+    @IBOutlet weak var frameImageStackViewWidthConstraint: NSLayoutConstraint!
+    
+    let insetWidth = UIScreen.main.bounds.size.width / 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +46,9 @@ extension MovieEditorViewController: MovieEditorViewInput {
         
         tapPlayerViewGesture = UITapGestureRecognizer(target: nil, action: nil)
         moviePalyerView.addGestureRecognizer(tapPlayerViewGesture)
+        
+        frameImageScrollView.contentInset.left = insetWidth
+        frameImageScrollView.contentInset.right = insetWidth
     }
     
     func bind(to viewModel: MovieEditorViewModel) {
@@ -57,5 +68,73 @@ extension MovieEditorViewController: MovieEditorViewInput {
             .bind(to: playImageView.rx.isHidden)
             .disposed(by: disposeBag)
         
+        viewModel.output
+            .frameImageList
+            .bind { imageList in
+                let width: CGFloat = (self.frameImageStackView.frame.height * 4) / 4
+                let height: CGFloat = self.frameImageStackView.frame.height
+                
+                imageList.forEach { image in
+                    let imageView = UIImageView(image: image)
+                    imageView.contentMode = .scaleAspectFit
+                    imageView.frame.size = CGSize(width: width, height: height)
+                    
+                    self.frameImageStackView.addArrangedSubview(imageView)
+                }
+                
+                self.frameImageStackViewWidthConstraint.constant = width * CGFloat(imageList.count)
+                self.view.layoutIfNeeded()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.output.duration
+            .drive(durationLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.output.currentTime
+            .drive(currentTimeLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.output.offsetParcentage
+            .drive(onNext: { [weak self] parcentage in
+                guard let self = self else {
+                    return
+                }
+                var parcentage = parcentage
+                parcentage = parcentage < 0 ? 0 : parcentage
+                parcentage = parcentage > 1 ? 1 : parcentage
+                
+                let contentSizeWidth = self.frameImageScrollView.contentSize.width
+                let offsetX = contentSizeWidth * CGFloat(parcentage) - self.insetWidth
+                let offset = CGPoint(x: offsetX, y: self.frameImageScrollView.contentOffset.y)
+                
+                self.frameImageScrollView.setContentOffset(offset, animated: false)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension Reactive where Base: MovieEditorViewController {
+    var didScrollFrameImage: ControlEvent<Double> {
+        let source = base.frameImageScrollView.rx
+            .didScroll
+            .map { [weak base] () -> Double? in
+                guard
+                    base?.frameImageScrollView.isDragging == true,
+                    let offset = base?.frameImageScrollView.contentOffset,
+                    let contentWidth = base?.frameImageScrollView.contentSize.width,
+                    let insetWidth = base?.insetWidth else {
+                        return nil
+                }
+                let offsetX = offset.x + insetWidth
+                var parcentage = Double(offsetX / contentWidth)
+                parcentage = parcentage < 0 ? 0 : parcentage
+                parcentage = parcentage > 1 ? 1 : parcentage
+                
+                return round(parcentage * 10000) / 10000
+            }
+            .filterNil()
+        
+        return ControlEvent(events: source)
     }
 }

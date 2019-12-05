@@ -28,7 +28,8 @@ class MovieEditorWireframe: MovieEditorWireframeInput {
         
         let viewModelDependency = MovieEditorViewModel.Dependency(wireframe: wireframe, usecase: usecase, movieManager: MovieManager(with: movie.urlAsset!))
         let viewModelInput = MovieEditorViewModel.Input(didTapCloseButton: view.closeButton.rx.tap,
-                                                        didTapPlayerView: view.tapPlayerViewGesture.rx.event)
+                                                        didTapPlayerView: view.tapPlayerViewGesture.rx.event,
+                                                        didScrollFrameImage: view.rx.didScrollFrameImage)
         
         let viewModel = MovieEditorViewModel(dependency: viewModelDependency, input: viewModelInput, movie: movie)
         
