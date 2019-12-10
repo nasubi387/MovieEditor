@@ -29,6 +29,7 @@ class MovieEditorViewController: UIViewController {
     @IBOutlet weak var frameImageScrollView: UIScrollView!
     @IBOutlet weak var frameImageStackView: UIStackView!
     @IBOutlet weak var frameImageStackViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var currentTimeView: UIView!
     
     let insetWidth = UIScreen.main.bounds.size.width / 2
     
@@ -70,21 +71,25 @@ extension MovieEditorViewController: MovieEditorViewInput {
         
         viewModel.output
             .frameImageList
-            .bind { imageList in
-                let width: CGFloat = (self.frameImageStackView.frame.height * 4) / 4
+            .drive(onNext: {[weak self] imageList in
+                guard let self = self else {
+                    return
+                }
+                let width: CGFloat = (self.frameImageStackView.frame.height * 4) / 3
                 let height: CGFloat = self.frameImageStackView.frame.height
                 
                 imageList.forEach { image in
                     let imageView = UIImageView(image: image)
-                    imageView.contentMode = .scaleAspectFit
+                    imageView.contentMode = .scaleAspectFill
                     imageView.frame.size = CGSize(width: width, height: height)
                     
                     self.frameImageStackView.addArrangedSubview(imageView)
                 }
                 
                 self.frameImageStackViewWidthConstraint.constant = width * CGFloat(imageList.count)
+                self.view.bringSubviewToFront(self.currentTimeView)
                 self.view.layoutIfNeeded()
-            }
+            })
             .disposed(by: disposeBag)
         
         viewModel.output.duration

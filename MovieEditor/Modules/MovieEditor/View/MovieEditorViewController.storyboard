@@ -66,6 +66,13 @@
                                                 <viewLayoutGuide key="contentLayoutGuide" id="vqx-i5-GNc"/>
                                                 <viewLayoutGuide key="frameLayoutGuide" id="A5q-fU-KUl"/>
                                             </scrollView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wva-Le-aO6">
+                                                <rect key="frame" x="206" y="0.0" width="2" height="60"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="2" id="x0n-n5-fta"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
@@ -73,7 +80,10 @@
                                             <constraint firstAttribute="height" constant="60" id="EiI-Tw-4KY"/>
                                             <constraint firstAttribute="trailing" secondItem="da2-a2-SCv" secondAttribute="trailing" id="Rpv-EX-D1t"/>
                                             <constraint firstItem="da2-a2-SCv" firstAttribute="top" secondItem="CKL-fE-q2h" secondAttribute="top" id="WZY-2I-ukE"/>
+                                            <constraint firstItem="Wva-Le-aO6" firstAttribute="centerX" secondItem="CKL-fE-q2h" secondAttribute="centerX" id="gUY-BU-HQF"/>
+                                            <constraint firstItem="Wva-Le-aO6" firstAttribute="centerY" secondItem="CKL-fE-q2h" secondAttribute="centerY" id="gZJ-nq-8Xe"/>
                                             <constraint firstItem="da2-a2-SCv" firstAttribute="leading" secondItem="CKL-fE-q2h" secondAttribute="leading" id="ghp-7m-Hx4"/>
+                                            <constraint firstItem="Wva-Le-aO6" firstAttribute="height" secondItem="CKL-fE-q2h" secondAttribute="height" id="m6M-of-5E8"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atc-uz-v5w">
@@ -117,6 +127,7 @@
                     <navigationItem key="navigationItem" id="dtI-fk-Jn3"/>
                     <connections>
                         <outlet property="currentTimeLabel" destination="Mz6-14-E3c" id="KTW-u8-8Sx"/>
+                        <outlet property="currentTimeView" destination="Wva-Le-aO6" id="Os9-Z6-dKW"/>
                         <outlet property="durationLabel" destination="C7p-Rg-7VZ" id="AlT-9Q-mJA"/>
                         <outlet property="frameImageScrollView" destination="da2-a2-SCv" id="DHy-io-vBn"/>
                         <outlet property="frameImageStackView" destination="Xho-Wj-mzn" id="6aP-5c-0ip"/>

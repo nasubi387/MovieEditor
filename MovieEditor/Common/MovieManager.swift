@@ -13,59 +13,74 @@ import RxCocoa
 import UIKit
 
 class MovieManager {
+    let disposeBag = DisposeBag()
     
-    let movie: AVURLAsset
-    let playerItem: AVPlayerItem
-    let player: AVPlayer
-    let playerLayer: AVPlayerLayer
+    let player: Observable<AVPlayer>
+    let playerLayer: Observable<AVPlayerLayer>
+    let frameImageList: Driver<[UIImage]>
+    let currentTime: Observable<CMTime>
+    let isPlaying: Observable<Bool>
+    let duration: Observable<CMTime>
     
-    //let _player: BehaviorRelay<AVPlayer>
-    lazy var frameImageList = Observable<[UIImage]>.just(getFrameImageList())
+    let _player: BehaviorRelay<AVPlayer>
     
     init(with movie: AVURLAsset) {
-        self.movie = movie
-        playerItem = AVPlayerItem(asset: movie)
-        player = AVPlayer(playerItem: self.playerItem)
-        playerLayer = AVPlayerLayer(player: self.player)
+        let playerItem = AVPlayerItem(asset: movie)
+        let player = AVPlayer(playerItem: playerItem)
         
-        //_player = BehaviorRelay<AVPlayer>(value: player)
-    }
-    
-    private func getFrameImageList() -> [UIImage] {
-        let imageGenerator = AVAssetImageGenerator(asset: movie)
-        let seconds = Int(movie.duration.seconds)
+        _player = BehaviorRelay<AVPlayer>(value: player)
+        self.player = _player.asObservable()
         
-        let frameImageList = (0..<seconds).compactMap { second -> UIImage? in
-            let capturingTime = CMTime(seconds: Double(second), preferredTimescale: 1)
-            guard let cgImage = try? imageGenerator.copyCGImage(at: capturingTime, actualTime: nil) else {
-                return nil
+        self.playerLayer = _player.map { AVPlayerLayer(player: $0) }
+        
+        self.frameImageList = _player.map { player -> [UIImage] in
+            guard let movie = player.currentItem?.asset else {
+                return []
+            }
+            let imageGenerator = AVAssetImageGenerator(asset: movie)
+            let seconds = Int(movie.duration.seconds)
+            
+            let frameImageList = (0..<seconds).compactMap { second -> UIImage? in
+                let capturingTime = CMTime(seconds: Double(second), preferredTimescale: 1)
+                guard let cgImage = try? imageGenerator.copyCGImage(at: capturingTime, actualTime: nil) else {
+                    return nil
+                }
+                
+                return UIImage(cgImage: cgImage)
             }
             
-            return UIImage(cgImage: cgImage)
+            return frameImageList
         }
+        .asDriver(onErrorJustReturn: [])
         
-        return frameImageList
+        self.currentTime = _player.flatMap { $0.rx.periodicTimeObserver(interval: CMTime(value: 1, timescale: 100)) }
+        
+        self.isPlaying = _player.flatMap { $0.rx.isPlaying }
+        
+        self.duration = _player.flatMap { Observable.just($0.currentItem?.duration ?? .zero) }
     }
 }
 
 extension MovieManager {
     
     func play() {
-        player.play()
+        _player.value.play()
     }
     
     func pause() {
-        player.pause()
+        _player.value.pause()
     }
     
     func updatePlayTime(_ parcentage: Double) {
-        let duration = self.playerItem.asset.duration
+        guard let duration = _player.value.currentItem?.asset.duration else {
+            return
+        }
         let durationSeconds = CMTimeGetSeconds(duration)
         let toTimeSeconds = durationSeconds * parcentage
         let toTime = CMTimeMakeWithSeconds(toTimeSeconds, preferredTimescale: duration.timescale)
         let tolerance = CMTime.zero
         
-        self.player.seek(to: toTime, toleranceBefore: tolerance, toleranceAfter: tolerance)
+        _player.value.seek(to: toTime, toleranceBefore: tolerance, toleranceAfter: tolerance)
     }
 }
 
@@ -87,10 +102,35 @@ extension Reactive where Base: AVPlayer {
         return self.observe(Float.self, #keyPath(AVPlayer.rate))
             .map { $0 == 1.0 }
     }
+    
+    var currentItem: Observable<AVPlayerItem?> {
+        return observe(AVPlayerItem.self, #keyPath(AVPlayer.currentItem))
+    }
+    
+    var duration: Observable<CMTime> {
+        return Observable.create { [weak base] observer in
+            guard let base = base else {
+                return Disposables.create()
+            }
+            
+            return base.rx.currentItem
+                .subscribe(onNext: { currentItem in
+                    guard let currentItem = currentItem else {
+                        observer.onNext(.zero)
+                        return
+                    }
+                    observer.onNext(currentItem.duration)
+            })
+        }
+    }
 }
 
 extension Reactive where Base: AVPlayerItem {
     var duration: Observable<CMTime> {
-        return self.observe(CMTime.self, #keyPath(AVPlayerItem.duration)).debug().filterNil()
+        return self.observe(CMTime.self, #keyPath(AVPlayerItem.duration)).map { $0 ?? .zero }
+    }
+    
+    var status: Observable<AVPlayerItem.Status> {
+        return self.observe(AVPlayerItem.Status.self, #keyPath(AVPlayerItem.status)).map { $0 ?? .unknown }
     }
 }

@@ -28,7 +28,7 @@ class MovieEditorViewModel {
     struct Output {
         let playerLayer: Observable<AVPlayerLayer>
         let isHiddenPlayImageView: Observable<Bool>
-        let frameImageList: Observable<[UIImage]>
+        let frameImageList: Driver<[UIImage]>
         let currentTime: Driver<String>
         let duration: Driver<String>
         let offsetParcentage: Driver<Double>
@@ -64,23 +64,23 @@ class MovieEditorViewModel {
         _currentTimeParcentage = PublishRelay<Double>()
         
         // output
-        let playerLayer = Observable.just(dependency.movieManager.playerLayer)
+        let playerLayer = dependency.movieManager.playerLayer
         
         let isHiddenPlayImageView = _playStatus.map { $0 == .playing }.share()
         
         let frameImageList = dependency.movieManager.frameImageList
         
-        let currentTime = dependency.movieManager.player.rx.periodicTimeObserver(interval: CMTime(value: 1, timescale: 100))
+        let currentTime = dependency.movieManager.currentTime
             .map { currentTime -> String in
                 let time = CMTimeGetSeconds(currentTime)
                 let min = Int(time / 60)
                 let sec = Int(time) % 60
                 return String(format:"%02d:%02d", min, sec)
-            }
+            }.debug()
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "00:00")
         
-        let duration = dependency.movieManager.playerItem.rx.duration
+        let duration = dependency.movieManager.duration
             .map { durationTime -> String in
                 let duration = CMTimeGetSeconds(durationTime)
                 let min = Int(duration / 60)
@@ -89,19 +89,23 @@ class MovieEditorViewModel {
             }
             .asDriver(onErrorJustReturn: "00:00")
         
-        let offsetParcentage = Observable.combineLatest(
-            dependency.movieManager.player.rx.periodicTimeObserver(interval: CMTime(value: 1, timescale: 100)),
-            Observable.just(dependency.movieManager.playerItem.duration),
-            dependency.movieManager.player.rx.isPlaying)
-            .flatMap { (currentTime, durationTime, isPlaying) -> Observable<Double> in
+        let offsetParcentage = Observable.combineLatest(dependency.movieManager.currentTime,
+                                                        dependency.movieManager.duration,
+                                                        dependency.movieManager.isPlaying)
+            .map { (currentTime, durationTime, isPlaying) -> Double? in
                 guard isPlaying == true else {
-                    return Observable.empty()
+                    return nil
                 }
                 let time = CMTimeGetSeconds(currentTime)
                 let duration = CMTimeGetSeconds(durationTime)
                 
-                return Observable.just(time / duration)
-            }
+                guard duration != 0 else {
+                    return nil
+                }
+                
+                return time / duration
+            }.debug()
+            .filterNil()
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
         
