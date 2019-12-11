@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 extension UIView {
     @IBInspectable var cornerRadius: CGFloat {
@@ -51,5 +53,13 @@ extension NibLoadable where Self: UIView {
         view.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+    }
+}
+
+extension Reactive where Base: UIView {
+    var origin: Binder<CGPoint> {
+        return Binder(base) { view, origin in
+            view.frame.origin = origin
+        }
     }
 }

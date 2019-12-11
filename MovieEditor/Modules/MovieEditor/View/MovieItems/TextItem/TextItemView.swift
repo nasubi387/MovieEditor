@@ -52,22 +52,23 @@ extension TextItemView {
             })
             .disposed(by: disposeBag)
         
-        panViewGesture.rx.event.asDriver()
-            .drive(onNext: { [weak self] gesture in
+        panViewGesture.rx.event
+            .flatMap { [weak self] gesture -> Observable<CGPoint> in
                 guard let self = self else {
-                    return
+                    return Observable.empty()
                 }
                 switch gesture.state {
                 case .began:
                     self.orgOrigin = self.frame.origin
-                    self.frame.origin = self.orgOrigin
+                    return Observable.just(self.orgOrigin)
                 case .changed:
                     let newPoint = gesture.translation(in: self)
-                    self.frame.origin = self.orgOrigin + newPoint
+                    return Observable.just(self.orgOrigin + newPoint)
                 default:
-                    return
+                    return Observable.empty()
                 }
-            })
+            }
+            .bind(to: self.rx.origin)
             .disposed(by: disposeBag)
     }
     
