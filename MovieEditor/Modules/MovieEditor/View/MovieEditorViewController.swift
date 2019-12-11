@@ -37,6 +37,10 @@ class MovieEditorViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 }
 
 extension MovieEditorViewController: MovieEditorViewInput {
@@ -116,6 +120,13 @@ extension MovieEditorViewController: MovieEditorViewInput {
                 self.frameImageScrollView.setContentOffset(offset, animated: false)
             })
             .disposed(by: disposeBag)
+        
+        let movieCenter = moviePalyerView.center
+        let textView = TextItemView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        textView.center = movieCenter
+        textView.bind()
+        
+        moviePalyerView.addSubview(textView)
     }
 }
 

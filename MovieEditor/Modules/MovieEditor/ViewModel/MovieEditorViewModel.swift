@@ -76,7 +76,7 @@ class MovieEditorViewModel {
                 let min = Int(time / 60)
                 let sec = Int(time) % 60
                 return String(format:"%02d:%02d", min, sec)
-            }.debug()
+            }
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "00:00")
         
@@ -104,7 +104,7 @@ class MovieEditorViewModel {
                 }
                 
                 return time / duration
-            }.debug()
+            }
             .filterNil()
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
