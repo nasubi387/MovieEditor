@@ -31,6 +31,8 @@ class MovieEditorViewController: UIViewController {
     @IBOutlet weak var frameImageStackViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var currentTimeView: UIView!
     
+    @IBOutlet weak var addButton: UIButton!
+    
     let insetWidth = UIScreen.main.bounds.size.width / 2
     
     override func viewDidLoad() {
@@ -121,12 +123,25 @@ extension MovieEditorViewController: MovieEditorViewInput {
             })
             .disposed(by: disposeBag)
         
-        let movieCenter = moviePalyerView.center
-        let textView = TextItemView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        textView.center = movieCenter
-        textView.bind()
+        viewModel.output.addedMovieItems
+            .drive(onNext: { [weak self] movieItems in
+                guard let self = self else {
+                    return
+                }
+                movieItems.forEach {
+                    $0.center = self.moviePalyerView.center
+                    self.moviePalyerView.addSubview($0)
+                }
+            })
+            .disposed(by: disposeBag)
         
-        moviePalyerView.addSubview(textView)
+        viewModel.output.removedMovieItems
+            .drive(onNext: { movieItems in
+                movieItems.forEach {
+                    $0.removeFromSuperview()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 

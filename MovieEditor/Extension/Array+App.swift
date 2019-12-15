@@ -16,3 +16,13 @@ extension Array {
         return self[index]
     }
 }
+
+func -(_ left:[MovieItem], _ right:[MovieItem]) -> [MovieItem] {
+    return left.compactMap { element in
+        if (right.filter { $0 == element }).count == 0 {
+            return element
+        } else {
+            return nil
+        }
+    }
+}

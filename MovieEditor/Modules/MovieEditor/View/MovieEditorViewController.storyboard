@@ -37,9 +37,23 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGM-zE-fga">
                                         <rect key="frame" x="0.0" y="594" width="414" height="70"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3u0-k1-bew">
+                                                <rect key="frame" x="16" y="20" width="100" height="30"/>
+                                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="Vmf-Zk-5fX"/>
+                                                </constraints>
+                                                <state key="normal" title="追加">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="Pyi-LN-4LF"/>
+                                            <constraint firstItem="3u0-k1-bew" firstAttribute="leading" secondItem="bGM-zE-fga" secondAttribute="leading" constant="16" id="veq-jt-YCs"/>
+                                            <constraint firstItem="3u0-k1-bew" firstAttribute="centerY" secondItem="bGM-zE-fga" secondAttribute="centerY" id="wUA-Wo-tAB"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKL-fE-q2h">
@@ -126,6 +140,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="dtI-fk-Jn3"/>
                     <connections>
+                        <outlet property="addButton" destination="3u0-k1-bew" id="bSY-KB-9Bu"/>
                         <outlet property="currentTimeLabel" destination="Mz6-14-E3c" id="KTW-u8-8Sx"/>
                         <outlet property="currentTimeView" destination="Wva-Le-aO6" id="Os9-Z6-dKW"/>
                         <outlet property="durationLabel" destination="C7p-Rg-7VZ" id="AlT-9Q-mJA"/>

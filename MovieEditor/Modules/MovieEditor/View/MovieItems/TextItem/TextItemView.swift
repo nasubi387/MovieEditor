@@ -10,10 +10,15 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class TextItemView: UIView, NibLoadable {
-    private let disposeBag = DisposeBag()
+protocol MovieItem where Self: UIView {
+}
+
+class TextItemView: UIView, MovieItem, NibLoadable {
+    let disposeBag = DisposeBag()
     
     @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var deleteButton: UIButton!
+    
     var panViewGesture: UIPanGestureRecognizer!
     var orgOrigin: CGPoint = .zero
     var orgParentPoint : CGPoint = .zero

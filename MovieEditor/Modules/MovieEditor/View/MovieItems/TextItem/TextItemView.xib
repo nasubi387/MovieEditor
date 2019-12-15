@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TextItemView" customModule="MovieEditor" customModuleProvider="target">
             <connections>
+                <outlet property="deleteButton" destination="2xg-1V-nX7" id="qsB-Hy-jbW"/>
                 <outlet property="textField" destination="7Kh-a6-bMZ" id="vq3-Vs-v14"/>
             </connections>
         </placeholder>
@@ -22,29 +23,56 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2xg-1V-nX7">
+                    <rect key="frame" x="359" y="-6" width="22" height="22"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="2xg-1V-nX7" secondAttribute="height" multiplier="1:1" id="FbE-cc-GcP"/>
+                        <constraint firstAttribute="height" constant="22" id="lO2-bj-qte"/>
+                    </constraints>
+                    <state key="normal" image="MovieEditor_close"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="11"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="2xg-1V-nX7" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="6" id="5iE-b1-T1x"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="7Kh-a6-bMZ" secondAttribute="trailing" id="Ny0-vD-V7E"/>
                 <constraint firstItem="7Kh-a6-bMZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="V99-AU-pht"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="7Kh-a6-bMZ" secondAttribute="bottom" id="XIN-G1-b5R"/>
                 <constraint firstItem="7Kh-a6-bMZ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="aFY-Sd-0gY"/>
+                <constraint firstItem="2xg-1V-nX7" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="-6" id="aWt-i3-jBA"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                    <real key="value" value="1"/>
-                </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                     <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                </userDefinedRuntimeAttribute>
-                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="10"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="138.40000000000001" y="-105.24737631184409"/>
         </view>
     </objects>
+    <resources>
+        <image name="MovieEditor_close" width="36" height="36"/>
+    </resources>
 </document>

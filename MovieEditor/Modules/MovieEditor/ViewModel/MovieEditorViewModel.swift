@@ -23,6 +23,7 @@ class MovieEditorViewModel {
         let didTapCloseButton: ControlEvent<()>
         let didTapPlayerView: ControlEvent<UITapGestureRecognizer>
         let didScrollFrameImage: ControlEvent<Double>
+        let didTapAddTextItemButton: ControlEvent<()>
     }
     
     struct Output {
@@ -32,6 +33,8 @@ class MovieEditorViewModel {
         let currentTime: Driver<String>
         let duration: Driver<String>
         let offsetParcentage: Driver<Double>
+        let addedMovieItems: Driver<[MovieItem]>
+        let removedMovieItems: Driver<[MovieItem]>
     }
     
     struct State {
@@ -52,6 +55,7 @@ class MovieEditorViewModel {
     private let _movie: BehaviorRelay<MovieContent>
     private let _playStatus: BehaviorRelay<PlayStatus>
     private let _currentTimeParcentage: PublishRelay<Double>
+    private let _movieItems: BehaviorRelay<[MovieItem]>
     
     init(dependency: Dependency, input: Input, movie: MovieContent) {
         self.dependency = dependency
@@ -62,6 +66,8 @@ class MovieEditorViewModel {
         _playStatus = BehaviorRelay<PlayStatus>(value: .paused)
         
         _currentTimeParcentage = PublishRelay<Double>()
+        
+        _movieItems = BehaviorRelay<[MovieItem]>(value: [])
         
         // output
         let playerLayer = dependency.movieManager.playerLayer
@@ -109,12 +115,25 @@ class MovieEditorViewModel {
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
         
+        let defMovieItems = Observable.zip(_movieItems.asObservable(), _movieItems.asObservable().skip(1))
+        let addedMovieItems = defMovieItems.map { (prev, next) -> [MovieItem] in
+            return next - prev
+        }
+        .asDriver(onErrorJustReturn: [])
+        
+        let removedMovieItems = defMovieItems.map { prev, next -> [MovieItem] in
+            return prev - next
+        }
+        .asDriver(onErrorJustReturn: [])
+        
         let output = Output(playerLayer: playerLayer,
                             isHiddenPlayImageView: isHiddenPlayImageView,
                             frameImageList: frameImageList,
                             currentTime: currentTime,
                             duration: duration,
-                            offsetParcentage: offsetParcentage)
+                            offsetParcentage: offsetParcentage,
+                            addedMovieItems: addedMovieItems,
+                            removedMovieItems: removedMovieItems)
         self.output = output
         
         // input
@@ -139,6 +158,20 @@ class MovieEditorViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.didTapAddTextItemButton.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                let newTextItem = self.createNewItem()
+                
+                var movieItems = self._movieItems.value
+                movieItems.append(newTextItem)
+                
+                self._movieItems.accept(movieItems)
+            })
+            .disposed(by: disposeBag)
+        
         _playStatus.asDriver()
             .drive(onNext: { [weak self] status in
                 switch status {
@@ -156,5 +189,24 @@ extension MovieEditorViewModel {
     
     private func fetch() {
         
+    }
+    
+    private func createNewItem() -> MovieItem {
+        let newTextItem = TextItemView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
+        newTextItem.bind()
+        
+        newTextItem.deleteButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                var movieItems = self._movieItems.value
+                movieItems.removeAll { $0 == newTextItem }
+                
+                self._movieItems.accept(movieItems)
+            })
+            .disposed(by: newTextItem.disposeBag)
+        
+        return newTextItem
     }
 }
